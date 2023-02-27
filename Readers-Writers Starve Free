@@ -1,0 +1,57 @@
+// declaring mutex and semaphores
+mutex mutex;
+sempahore a = 1;
+
+int read_count = 0; // to keep read count
+
+// Writers function
+void writer()
+{
+    while (true)
+    {
+        // Wait for the semaphore
+        wait(a);
+
+        // Update the shared resource
+        // critical section for writers
+
+        // Signal the semaphore
+        signal(a);
+    }
+}
+
+// Reader function
+void reader()
+{
+    while (true)
+    {
+        // Acquire the mutex to update the read count
+        mutex.acquire();
+        read_count++;
+
+        // If this is the first reader, wait for the semaphore
+        if (read_count == 1)
+        {
+            wait(a);
+        }
+
+        // Release the mutex
+        mutex.release();
+
+        // Read the shared resource
+        // critical section for readers
+
+        // Acquire the mutex to update the read count
+        mutex.acquire();
+        read_count--;
+
+        // If this is the last reader, signal the semaphore
+        if (read_count == 0)
+        {
+            signal(rw_sem);
+        }
+
+        // Release the mutex
+        mutex.release();
+    }
+}
