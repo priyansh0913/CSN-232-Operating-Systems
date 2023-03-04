@@ -48,7 +48,7 @@ void reader()
         // If this is the last reader, signal the semaphore
         if (read_count == 0)
         {
-            signal(rw_sem);
+            signal(a);
         }
 
         // Release the mutex
